@@ -2,3 +2,63 @@
 @model FarmerConnect.Pages.ServicesModel
 @{
 }
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+<div class="container">
+
+    @if (Model.message.Length > 1)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Hello!</strong> @Model.message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <style>
+
+        form {
+            margin-left: 27%;
+            margin-top: 40px;
+        }
+
+        .icon {
+            color: white;
+            margin-top: 4px;
+            margin-left: 6px;
+        }
+
+        form label {
+            color: #fff;
+        }
+
+        form h2 {
+            color: #fff;
+        }
+    </style>
+    <br />
+    <button type="button" onclick="location.href='@Url.Page("/Agribusiness")'" class="btn btn-outline-primary">Back</button>
+    <form method="post">
+        <div class="row g-3">
+            <h2>Service Form <ion-icon name="construct-outline"></ion-icon> </h2>
+            <div class="col">
+                <label for="fullname">Your ID<ion-icon class="icon" name="person-outline"></ion-icon></label>
+                <input type="text" id="user_id" name="user_id" readonly value="@HttpContext.Session.GetInt32("UserId")">
+            </div>
+            <div>
+                <label for="fullname">Service Type<ion-icon name="file-tray-full-outline"></ion-icon></label>
+                <input type="text" placeholder="Enter Service Type" aria-label="type" name="type">
+            </div>
+            <div>
+                <label for="fullname">Price<ion-icon name="cash-outline"></ion-icon></label>
+                <input type="number" class="form-control" placeholder="Enter price" aria-label="price" name="price">
+            </div>
+            <div class="col">
+                <label for="fullname">Description<ion-icon name="filter-outline"></ion-icon></label>
+                <input type="text" class="form-control" placeholder="Enter description" aria-label="description" name="description">
+            </div>
+        </div>
+        <br />
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+    </form>
