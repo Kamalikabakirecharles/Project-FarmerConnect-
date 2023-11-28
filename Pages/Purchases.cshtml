@@ -2,3 +2,44 @@
 @model FarmerConnect.Pages.PurchasesModel
 @{
 }
+<style>
+
+    
+
+</style>
+<div class="container">
+<button type="button" onclick="location.href='@Url.Page("/FarmerHome")'" class="btn btn-outline-primary">Back</button>
+<br />
+    <center><h2>Your Purchases</h2></center>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Buyer</th>
+                <th>Seller</th>
+                <th>Resource</th>
+                <th>Service</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (var tra in Model.transactionlist)
+            {
+                <tr>
+                    <td>@tra.transaction_id</td>
+                    <td>@tra.buyer_id</td>
+                    <td>@tra.seller_id</td>
+                    <td>@tra.resource_id</td>
+                    <td>@tra.service_id</td>
+                    <td>@tra.quantity</td>
+                    <td>@tra.total_amount</td>
+
+                </tr>
+            <th scope="row" style="color:#2d6a4f">Time<ion-icon name="stopwatch-outline"></ion-icon></th>
+            <td colspan="2" class="table-active" style="color:#ff9b85">@tra.transaction_date</td>
+            }
+        </tbody>
+    </table>
+
+</div>
