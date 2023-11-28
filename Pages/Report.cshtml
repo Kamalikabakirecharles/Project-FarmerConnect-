@@ -2,3 +2,81 @@
 @model FarmerConnect.Pages.ReportModel
 @{
 }
+<button type="button" onclick="location.href='@Url.Page("/Agribusiness")'" class="btn btn-outline-primary">Back</button>
+<div class="container">
+    <h1>Report View</h1>
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button onclick="location.href='@Url.Page("/Report", new { view = "resources" })'" type="button" class="btn btn-primary">Switch to Resources</button>
+        <button onclick="location.href='@Url.Page("/Report", new { view = "services" })'" type="button" class="btn btn-primary">Switch to Services</button>
+    </div>
+
+    @if (Model.IsResourceView)
+    {
+        <center><h2>Resources</h2></center>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Resource ID</th>
+                    <th>Seller ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach (var resource in Model.ResourcesList)
+                {
+                    <tr>
+                        <td>@resource.resource_id</td>
+                        <td>@resource.seller_id</td>
+                        <td>@resource.name</td>
+                        <td>@resource.quantity</td>
+                        <td>@resource.price</td>
+                        <td>@resource.description</td>
+                        <td>
+                            <a asp-page="/RSpage" asp-route-resources_id="@resource.resource_id"
+                               asp-route-sellerId="@resource.seller_id" asp-route-Price="@resource.price"
+                               asp-route-Quantity="@resource.quantity" class="btn btn-outline-success">Update</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <center><h2>Services</h2></center>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Provider ID</th>
+                    <th>Service Type</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Timestamp</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach (var service in Model.ServicesList)
+                {
+                    <tr>
+                        <td>@service.ServiceId</td>
+                        <td>@service.ProviderId</td>
+                        <td>@service.ServiceType</td>
+                        <td>@service.Description</td>
+                        <td>@service.Price</td>
+                        <td>@service.Timestamp</td>
+                        <td>
+                            <a asp-page="/RSpage" asp-route-serviceId="@service.ServiceId"
+                               asp-route-sellerId="@service.ProviderId" asp-route-price="@service.Price" class="btn btn-outline-success">Update</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
