@@ -2,3 +2,74 @@
 @model FarmerConnect.Pages.SignupModel
 @{
 }
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+<div class="container">
+
+    @if (Model.message.Length > 1)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Hello!</strong> @Model.message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <style>
+        .icon{
+            color: white;
+            margin-top: 7px;
+            margin-left: 5px;
+        }
+        form label{
+            color: #fff;
+        }
+        form h2{
+            color: #fff;
+        }
+        form {
+            margin-left: 27%;
+            margin-top: 18px;        
+        }
+
+        .btnlg {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            margin-left: 20px;
+            display: flex;
+        }
+    </style>
+    <div class="btnlg">
+        <button type="button" onclick="location.href='@Url.Page("/Index")'" class="btn btn-outline-success">Home</button>
+    </div>
+    <form method="post">
+        <h2>SignUp Form <ion-icon class="icon" name="information-circle-outline"></ion-icon> </h2>
+        <div class="form-group fullname">
+            <label for="fullname">UserName<ion-icon class="icon" name="person-outline"></ion-icon></label>
+            <input type="text" id="UserName" placeholder="Enter your username" name="username">
+        </div>
+        <div class="form-group email">
+            <label for="email">Email Address<ion-icon class="icon" name="mail-outline"></ion-icon></label>
+            <input type="text" id="email" placeholder="Enter your email address" name="email">
+        </div>
+        <div class="form-group password">
+            <label for="password">Password<ion-icon class="icon" name="finger-print-outline"></ion-icon></label>
+            <input type="password" id="password" placeholder="Enter your password" name="password">
+            <i id="pass-toggle-btn" class="fa-solid fa-eye"></i>
+        </div>
+        <div class="form-group gender">
+            <label for="gender">As<ion-icon class="icon" name="people-outline"></ion-icon></label>
+            <select id="gender" name="role">
+                <option value="" selected disabled>Select your Role</option>
+                <option value="farmer">Farmer</option>
+                <option value="agribusiness">AgriBusiness</option>
+            </select>
+        </div>
+        <div>
+            <a href="/Login" class="info" style="color: #38b000;">I already have an account</a>
+        </div>
+        <div class="form-group submit-btn">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
