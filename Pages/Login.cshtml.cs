@@ -9,12 +9,11 @@ namespace FarmerConnect.Pages
 {
     public class LoginModel : PageModel
     {
-       String stgcon = "Data Source=DESKTOP-8UTAP68\\SQLEXPRESS;Initial Catalog=FarmerConnect;Integrated Security=True";
+        String stgcon = "Data Source=DESKTOP-8UTAP68\\SQLEXPRESS;Initial Catalog=FarmerConnect;Integrated Security=True";
         Users users = new Users();
         public string message = "";
         public void OnGet()
         {
-            HttpContext.Session.Clear();
         }
         private string encryptPasswd(string password)
         {
@@ -51,7 +50,6 @@ namespace FarmerConnect.Pages
 
             return 0; // Return some default value or handle it as needed
         }
-
         private string GetUserRoleFromDatabase(string email, string password)
         {
             using (SqlConnection connection = new SqlConnection(stgcon))
@@ -76,10 +74,37 @@ namespace FarmerConnect.Pages
                 }
             }
 
-            return null;
+            return null; // Return some default value or handle it as needed
         }
+        private bool UserExistsInRoleTable(int userId, string userRole)
+        {
+            using (SqlConnection connection = new SqlConnection(stgcon))
+            {
+                connection.Open();
 
+                string query;
 
+                if (userRole.Equals("Farmer", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = "SELECT COUNT(*) FROM Farmers WHERE [user_id] = @userId";
+                }
+                else if (userRole.Equals("Agribusiness", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = "SELECT COUNT(*) FROM Agribusinesses WHERE [user_id] = @userId";
+                }
+                else
+                {
+                    return false;
+                }
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
         public IActionResult OnPost()
         {
 
@@ -124,18 +149,38 @@ namespace FarmerConnect.Pages
                                 {
                                     HttpContext.Session.SetString("UserRole", userRole);
 
-                                    if (userRole.Equals("Farmer", StringComparison.OrdinalIgnoreCase))
+                                    if (!UserExistsInRoleTable(userId, userRole))
                                     {
-                                        return RedirectToPage("/FarmerHome");
-                                    }
-                                    else if (userRole.Equals("Agribusiness", StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        return RedirectToPage("/Agribusiness");
+                                        if (userRole.Equals("Farmer", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            return RedirectToPage("/FarmersInfo");
+                                        }
+                                        else if (userRole.Equals("Agribusiness", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            return RedirectToPage("/AgribusinessesInfo");
+                                        }
+                                        else
+                                        {
+                                            message = "Invalid User Role";
+                                            return Page();
+                                        }
+
                                     }
                                     else
                                     {
-                                        message = "Invalid User Role";
-                                        return Page();
+                                        if (userRole.Equals("Farmer", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            return RedirectToPage("/FarmerHome");
+                                        }
+                                        else if (userRole.Equals("Agribusiness", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            return RedirectToPage("/Agribusiness");
+                                        }
+                                        else
+                                        {
+                                            message = "Invalid User Role";
+                                            return Page();
+                                        }
                                     }
                                 }
                                 else
@@ -157,10 +202,10 @@ namespace FarmerConnect.Pages
                             message = "Wrong Password or Email";
                             con.Close();
                             return Page();
-                            
+
                         }
                     }
-                    
+
 
                 }
                 catch (Exception ex)
